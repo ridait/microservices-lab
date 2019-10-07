@@ -1,19 +1,25 @@
-package com.ridait.itbookcatalogservice.models;
+package com.ridait.itbookinfoservice.models;
 
-public class ItBookItem {
+public class ItBook {
 
+    private String bookId;
     private String title;
     private String author;
     private String description;
-    private int rating;
-    private String review;
 
-    public ItBookItem(String title, String author, String description, int rating, String review) {
+    public ItBook(String bookId,String title, String author, String description) {
+        this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.description = description;
-        this.rating = rating;
-        this.review = review;
+    }
+
+    public String getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
     public String getTitle() {
@@ -38,21 +44,5 @@ public class ItBookItem {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
-    public String getReview() {
-        return review;
-    }
-
-    public void setReview(String review) {
-        this.review = review;
     }
 }

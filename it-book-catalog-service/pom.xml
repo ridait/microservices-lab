@@ -11,7 +11,7 @@
 	<groupId>com.ridait</groupId>
 	<artifactId>it-book-catalog-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>it-book-catalog-service</name>
+	<title>it-book-catalog-service</title>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
