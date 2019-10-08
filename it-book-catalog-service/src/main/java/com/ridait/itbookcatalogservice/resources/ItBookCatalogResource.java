@@ -2,6 +2,7 @@ package com.ridait.itbookcatalogservice.resources;
 
 import com.ridait.itbookcatalogservice.models.ItBook;
 import com.ridait.itbookcatalogservice.models.ItBookItem;
+import com.ridait.itbookcatalogservice.models.UserRatingAndReview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,26 +26,28 @@ public class ItBookCatalogResource {
 
     @RequestMapping("/{userId}")
     public List<ItBookItem> getCatalog(@PathVariable String userId){
-        //let catalog service call info service
-        List<String> bookIds = Arrays.asList("123","456","789");
 
-
-        return bookIds.stream()
-                .map(bookId -> {
-                    //ItBook itBook = restTemplate.getForObject("http://localhost:8082/itbooks/"+bookId,ItBook.class);
-                    ItBook itBook = webClientBuilder.build()
-                            .get()
-                            .uri("http://localhost:8082/itbooks/"+bookId)
-                            .retrieve()
-                            .bodyToMono(ItBook.class)
-                            .block();
+        //let catalog service call rating & info services
+        UserRatingAndReview userRatingAndReview =
+                restTemplate.getForObject("http://localhost:8083/ratings/users/"+userId,UserRatingAndReview.class);
+        return userRatingAndReview.getRatings().stream()
+                .map(ratingAndReview -> {
+                    ItBook itBook = restTemplate.getForObject(
+                            "http://localhost:8082/itbooks/"+ratingAndReview.getBookId(),
+                            ItBook.class);
                     return new ItBookItem(itBook.getTitle(),
                             itBook.getAuthor(),
                             itBook.getDescription(),
-                            4,
-                            "Good Book");
+                            ratingAndReview.getRating(),
+                            ratingAndReview.getReview());
                 })
                 .collect(Collectors.toList());
 
     }
 }
+/* ItBook itBook = webClientBuilder.build()
+                            .get()
+                            .uri("http://localhost:8082/itbooks/"+bookId)
+                            .retrieve()
+                            .bodyToMono(ItBook.class)
+                            .block();*/
