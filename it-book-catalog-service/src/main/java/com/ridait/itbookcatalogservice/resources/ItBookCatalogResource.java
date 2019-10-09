@@ -29,11 +29,11 @@ public class ItBookCatalogResource {
 
         //let catalog service call rating & info services
         UserRatingAndReview userRatingAndReview =
-                restTemplate.getForObject("http://localhost:8083/ratings/users/"+userId,UserRatingAndReview.class);
+                restTemplate.getForObject("http://it-book-rating-and-review-service/ratings/users/"+userId,UserRatingAndReview.class);
         return userRatingAndReview.getRatings().stream()
                 .map(ratingAndReview -> {
                     ItBook itBook = restTemplate.getForObject(
-                            "http://localhost:8082/itbooks/"+ratingAndReview.getBookId(),
+                            "http://it-book-info-service/itbooks/"+ratingAndReview.getBookId(),
                             ItBook.class);
                     return new ItBookItem(itBook.getTitle(),
                             itBook.getAuthor(),
